@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    #dragArea {
+        width: 500px;
+        height: 200px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 5px #aaa;
+        margin: 0 auto;
+        text-align: center;
+        padding: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="dragArea">
+        拖拽上传文件
+    </div>
+    <div id='preview'>
+    </div>
+    <script type="text/javascript">
+    /**
+     * dragleave
+     * dragover
+     * dragenter
+     * drop
+     * @return {[type]} [description]
+     */
+
+
+    window.onload = function() {
+        var doc = document;
+        var dragArea = doc.getElementById('dragArea');
+        var preview = doc.getElementById('preview');
+
+        doc.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            console.log('dragLeave')
+        });
+        doc.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            console.log('dragover')
+        })
+        doc.addEventListener('dragenter', function(e) {
+            e.preventDefault();
+            console.log('dragEnter')
+        })
+        doc.addEventListener('drop', function(e) {
+            e.preventDefault();
+            console.log('drop')
+        })
+        dragArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            // 获取文件对象
+            var fileList = e.dataTransfer.files;
+            console.log(fileList);
+            if (fileList.length === 0) {
+                return false;
+            }
+            // 检测文件是不是图片
+            if (fileList[0].type.indexOf('image') === -1) {
+                alert('你拖动的不是图片');
+                return false;
+            }
+
+            // 拖拉图片到浏览器，可是实现预览功能
+            var img = window.URL.createObjectURL(fileList[0]);
+            console.log(img)
+            var filename = fileList[0].name;
+            var fileSize = Math.round(fileList[0].size / 1024, 1);
+            var str = '<img src="' + img + '" alt="" />' +
+                '<p>文件名: ' + filename + '</p>' +
+                '<p>大小: ' + fileSize + 'k</p>'
+            preview.innerHTML = str;
+
+            // 上传图片
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/uplodDargImg', true);
+            var fd = new FormData();
+            fd.append('mypic', fileList[0]);
+            xhr.send(fd);
+        })
+
+
+    }
+    </script>
+</body>
+
+</html>

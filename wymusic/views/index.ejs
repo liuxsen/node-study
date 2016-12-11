@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="/jquery.min.js"></script>
+</head>
+<body>
+	<input type="text" name="" id="serch">
+	<div id="box">
+		<h1></h1>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			$("#serch").on('blur',function(){
+				$('#box h1').html($("#serch").val())
+				$.get('/getsongList',{
+					name: $("#serch").val()
+				},function(data){
+					console.log(data)
+					appendLi(data)
+				})
+			})
+		})
+
+		function appendLi (data){
+			for(var i=0;i<data.length;i++){
+				var html = '<li sid="'+data[i].id+'">'+data[i].artists[0].name+'</li>';
+				$(html).appendTo("#box")
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><%=title%></title>
+</head>
+<body>
+	<ul>
+		<%for(var i=0;i<movies.length;i++){%>
+			<li><%=movies[i].doctor%></li>
+			<li><%=movies[i].languge%></li>
+			<li><%=movies[i].summary%></li>
+			<li>
+				<a href="/movie/<%=movies[i]._id%>"><%=movies[i].poster%></a>
+			</li>
+			<li><%=movies[i].flash%></li>
+			<li><%=movies[i].year%></li>
+			<li><%=movies[i].meta['createAt']%></li>
+			<li><%=movies[i].meta['updateAt']%></li>
+		<%}%>
+	</ul>
+	
+</body>
+</html>

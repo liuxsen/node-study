@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="/bootstrap-3.3.0-dist/dist/css/bootstrap.min.css">
+	<script src="/jquery/dist/jquery.js"></script>
+	<script src="/bootstrap-3.3.0-dist/dist/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		body{
+			padding-top: 50px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-2 form-horizontal">
+			  <div class="form-group">
+			    <label for="inputEmail3" class="col-sm-2 control-label">doctor</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="doctor" placeholder="doctor">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="country" class="col-sm-2 control-label">country</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="country" placeholder="country">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="languge" class="col-sm-2 control-label">languge</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="languge" placeholder="languge">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="summary" class="col-sm-2 control-label">summary</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="summary" placeholder="summary">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="flash" class="col-sm-2 control-label">flash</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="flash" placeholder="flash">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="poster" class="col-sm-2 control-label">poster</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="poster" placeholder="poster">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="year" class="col-sm-2 control-label">year</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="year" placeholder="year">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <button type="button" class="btn btn-default" id="btn">Sign in</button>
+			    </div>
+			  </div>
+		</div>
+		
+	</div>
+</div>
+<script type="text/javascript">
+/*
+doctor: String,
+    languge: String,
+    country: String,
+    summary: String, //简介
+    flash: String, //falsh地址
+    poster: String, //海报
+    year: Number, //
+    meta: { // 录入时间记录
+        createAt: {
+            type: Date,
+            default: Date.now
+        },
+        updateAt: {
+            type: Date,
+            default: Date.now
+        }
+
+    }*/
+
+
+$('#btn').on('click',function(){
+	$.post('/admin/movie/new',{
+			doctor: $("#doctor").val(),
+			country: $("#country").val(),
+			summary: $("#summary").val(),
+			flash: $("#flash").val(),
+			poster: $("#poster").val(),
+			year: $("#year").val(),
+			doctor: $("#doctor").val(),
+			languge: $("#languge").val()
+		},function(data){
+			console.log(data);
+		})
+})
+</script>
+</body>
+</html>
