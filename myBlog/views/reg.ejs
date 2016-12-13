@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+	<h1>注册</h1>
+	<ul>
+		<li>
+			<label>用户名</label>
+			<input type="text" id="username">
+		</li>
+		<li>
+			<label>密码</label>
+			<input type="text" id="password">
+		</li>
+		<li>
+			<label>年龄</label>
+			<input type="number" id="age">
+		</li>
+		<li>
+			<label>邮箱</label>
+			<input type="email" id="email">
+		</li>
+		<button id="reg">注册</button>
+	</ul>
+	<script src="/jquery/dist/jquery.js"></script>
+	<script>
+		$(function(){
+			$("#reg").click(function(){
+				$.post('/doreg',{
+					name: $("#username").val(),
+					pwd: $("#password").val(),
+				    age: $("#age").val(),
+				    email: $("#email").val()
+				},function(data){
+					if(data === '1'){
+						alert('注册成功,请登录');
+						location.href = '/login'
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>

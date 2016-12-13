@@ -1,0 +1,35 @@
+<%- include('../template/nav') -%>
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="hidden" id="author" val="<%= name %>">
+			<h1>添加文章</h1>
+			<p>
+			<input class="form-control" type="text" id="title">
+			</p>
+			<textarea class="form-control" name="" id="content" cols="30" rows="10"></textarea>
+			<div>
+			<input class="btn btn-default" type="button" value="提交" id="edit">
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/jquery/dist/jquery.js"></script>
+<script>
+	$(function(){
+		$("#edit").on('click',function(){
+			$.post('/articel/doEdit',{
+				title: $("#title").val(),
+				content: $("#content").val(),
+				author: $("#author").val()
+			},function(data){
+				if(data === '1'){
+					alert('新添加成功');
+					window.location= '/'
+				}
+			})
+		})
+	})
+</script>
+</body>
+</html>
