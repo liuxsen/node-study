@@ -1,0 +1,29 @@
+<% if(login){ %>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">个人信息</h3>
+	  </div>
+	  <div class="panel-body">
+	  	<a href="/user/setting"><img class="avatar" src="/avatar.jpg" alt=""></a>
+	    <%=name%>
+	    <h5>
+	    	这个人很懒，什么都没有留下
+	    </h5>
+	  </div>
+	</div>
+	<div class="panel panel-default">
+	  <div class="panel-body">
+	    <a href="/addArticle" class="btn btn-info">添加文章</a>
+	  </div>
+	</div>
+<%}else{%>
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">nodejs博客社区</h3>
+	  </div>
+	  <div class="panel-body">
+	    <a href="/login">登陆</a>
+	    <a href="/reg">注册</a>
+	  </div>
+	</div>
+<%}%>

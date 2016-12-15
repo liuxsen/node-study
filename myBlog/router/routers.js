@@ -207,3 +207,11 @@ exports.comment = function(req, res, next) {
         })
     })
 }
+
+
+exports.settingInfo = function(req, res, next) {
+    res.render('usersettingpage', {
+        login: req.session.login,
+        name: req.session.name
+    });
+}

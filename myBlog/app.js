@@ -36,5 +36,8 @@ app.get('/user/detail/:name', router.userDatail)
 
 app.post('/article/comment', router.comment)
 
+app.get('/user/setting', router.settingInfo)
+
+
 app.listen(3000);
 console.log('server is start');
