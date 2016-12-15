@@ -1,7 +1,9 @@
 var crypto = require('crypto');
 var User = require('../Schemas/user.js');
 var Article = require('../Schemas/articles.js');
+var Comment = require('../Schemas/Comment.js');
 var _ = require('underscore');
+var markdown = require("markdown").markdown;
 // 时间格式化
 require('date-utils');
 
@@ -10,11 +12,16 @@ function dateFormat(docs) {
     for (var i = 0; i < docs.length; i++) {
         var create_At = new Date(docs[i].create_At).toFormat("YYYY-MM-DD HH24:MI:SS");
         var update_At = new Date(docs[i].update_At).toFormat("YYYY-MM-DD HH24:MI:SS");
-        // console.log(docs[i].create_At, create_At);
-        docs[i].create_At = create_At;
-        docs[i].update_At = update_At;
-        console.log(i, docs[i].create_At, create_At)
-        arr[i] = docs[i];
+        var obj = {
+                create_At: create_At,
+                update_At: update_At,
+                _id: docs[i]._id,
+                content: docs[i].content,
+                title: docs[i].title,
+                author: docs[i].author
+            }
+            // console.log(i, docs[i].create_At, create_At);
+        arr.push(obj)
     }
     console.log('------');
     // console.log(arr);
@@ -25,27 +32,33 @@ function dateFormat(docs) {
 // 显示首页
 exports.showIndex = function(req, res, next) {
     var name = req.session.name;
-    // 展示出所有的文章页
-    Article.find({}, function(err, doc) {
-        if (err) console.log(err);
-        var docs = dateFormat(doc);
-        console.log(docs)
-        res.render('index', {
-            login: req.session.login,
-            articles: docs,
-            name: name
+    // 展示出所有的文章页,按照时间倒序排列;
+    Article.find({})
+        .sort({ update_At: -1 })
+        .exec(function(err, doc) {
+            if (err) console.log(err);
+            var docs = dateFormat(doc);
+            console.log(docs)
+            res.render('index', {
+                login: req.session.login,
+                articles: docs,
+                name: name
+            })
         })
-    })
 }
 
+// 登陆
 exports.login = function(req, res, next) {
-    res.render('login', {
-        login: req.session.login
-    });
-}
-
+        res.render('login', {
+            login: req.session.login
+        });
+    }
+    // 注册页面
 exports.reg = function(req, res, next) {
-    res.render('reg');
+    res.render('reg', {
+        login: req.session.login,
+        name: req.session.name
+    });
 }
 
 // 注册
@@ -105,49 +118,92 @@ exports.edit = function(req, res, next) {
         login: req.session.login
     });
 };
-// 提交文章
+
+
+// 添加文章
 exports.doEdit = function(req, res, next) {
     var name = req.session.name;
+    var content = markdown.toHTML(req.body.content);
     var article = {
         title: req.body.title,
-        content: req.body.content,
-        author: name
+        content: content,
+        author: req.session.name
     }
-    console.log(article, name)
     var newArticle = new Article(article);
-    newArticle.save(function(err, articledoc) {
+
+    User.findOne({ name: name }, function(err, user) {
         if (err) {
             console.log(err);
+            res.send('-1');
             return;
         }
-
-        User.findOne({ name: name }, function(err, user) {
-            if (err) console.log(err);
-            console.log(user);
-            user.articles.push(newArticle);
-            user.save();
-            /*newArticle.author.push(user);
-            newArticle.save();*/
-            res.send('1');
-            return;
-        })
+        user.articles.push(newArticle);
+        user.save();
+        newArticle.save();
+        res.send('1');
     })
 }
 
-
+// 文章详情
 exports.articleDetail = function(req, res, next) {
     var id = req.params.id;
-    Article.findById(id, function(err, doc) {
-        if (err) console.log(doc);
-        res.render('articleDatail', {
-            doc: doc,
-            login: req.session.login
+    Article.findById(id)
+        .populate('commemts')
+        .exec(function(err, doc) {
+            if (err) console.log(err);
+            console.log(doc);
+            res.render('articleDatail', {
+                doc: doc,
+                login: req.session.login,
+                name: req.session.name,
+                id: id
+            })
         })
-    })
 }
 
+// 登出
 exports.logout = function(req, res, next) {
     req.session.login = false;
     req.session.name = '';
     res.send('1')
+}
+
+// 用户信息 显示 文章列表
+exports.userDatail = function(req, res) {
+    var name = req.params.name;
+    console.log(name)
+    User.findOne({ name: name })
+        .populate('articles')
+        .exec(function(err, doc) {
+            if (err) console.log(err);
+            console.log(doc);
+            res.render('userdetail', {
+                login: req.session.login,
+                articles: doc.articles,
+                name: doc.name
+            })
+        })
+}
+
+// 添加文章评论;
+exports.comment = function(req, res, next) {
+    var obj = {
+        username: req.session.name,
+        content: req.body.content,
+    }
+    var comment = new Comment(obj);
+    comment.save(function(err, doc) {
+        if (err) console.log(err);
+        console.log(doc);
+        Article.findOne({ _id: req.body.id }, function(err, article) {
+            if (err) {
+                console.log(err);
+                res.send('-1');
+                return;
+            }
+            article.commemts.push(comment);
+            article.save();
+            res.send('1');
+        })
+    })
 }

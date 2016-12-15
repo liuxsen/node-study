@@ -1,6 +1,60 @@
 <%- include('../template/nav') -%>
-	<h1><%= doc.title%></h1>
-	<h1><%= doc.author%></h1>
-	<div><%= doc.content%></div>
+<div class="container">
+	<!-- 文章id -->
+	<input type="hidden" id="articleId" value="<%=id%>">
+	<div class="row">
+		<div class="col-md-8">
+			<input type="hidden" name="">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				  	<span class="text-left">
+				  		<%= doc.title%>
+				  	</span>
+				  	<p class="pull-right">
+				  		<a href="/user/detail/<%=doc.author%>"><%= doc.author%></a>
+				  	</p>
+				</div>
+				<div class="panel-body">
+				    <%- doc.content%>
+				</div>
+			</div>
+			<div class="list-group">
+			  <a href="#" class="list-group-item disabled">
+			    评论
+			  </a>
+			  <% for(var i=0;i<doc.commemts.length;i++){ %>
+			  	<a href="#" class="list-group-item"><%= doc.commemts[i].content%></a>
+			  <%}%>
+			</div>
+			<div class="panel panel-info">
+			  <div class="panel-heading">添加回复</div>
+			  <div class="panel-body">
+			    <textarea style="box-shadow: none;border:0;" id="replyContent" class="form-control" name="" id="content" cols="30" rows="10"></textarea>
+			    <div id="reply" class="btn btn-success">回复</div>
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-4">
+				<%-include('../template/userInfo.ejs')-%>
+			</div>
+	</div>
+</div>
+<script src="/jquery/dist/jquery.js"></script>
+<script>
+	$(function(){
+		$("#reply").on('click',function(){
+			var replayContent = $("#replyContent").val();
+			$.post('/article/comment',{
+				content:replayContent,
+				id: $("#articleId").val()
+			},function(data){
+				if(data === '1'){
+					alert('添加回复成功');
+					location.reload();
+				}
+			})
+		})
+	})
+</script>
 </body>
 </html>

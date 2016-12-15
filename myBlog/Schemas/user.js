@@ -8,7 +8,7 @@ var UserSchema = new Schema({
     pwd: String,
     articles: [{
         type: Schema.ObjectId,
-        ref: 'Articles'
+        ref: 'Article'
     }]
 })
 

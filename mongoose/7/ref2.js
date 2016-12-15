@@ -55,9 +55,10 @@ var Product = mongoose.model('Product', ProductSchema);
     })*/
 
 // 查找商品的用户
-
+/*
 Product.find({ name: '苹果' })
     .populate('userId')
     .exec(function(err, doc) {
         console.log(doc)
     })
+*/

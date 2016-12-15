@@ -25,36 +25,27 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-	<%if(login){%>
-	<!-- 如果登陆的话，添加文章功能 -->
-		<a href="/addArticle">添加文章</a>
-		<a href="#" id="logout">退出登陆</a>
-	<%}else{%>
-		<h1>你好，请先登陆或者注册</h1>
-		<a href="/login">登陆</a>
-		<a href="/reg">注册</a>
-	<%}%>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8 ">
 				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading">文章列表</div>
+				  <!-- List group -->
 				  <ul class="list-group">
-				  <%for (var i=0;i<articles.length;i++){%>
-				    <li class="list-group-item">
-				    	<a href="#" class="pull-left"><%= articles[i].author %></a>
-				    	<a href="/article/detail/<%=articles[i]._id%>"><%= articles[i].title %></a>
-				    	<span class='pull-right'><%= articles[i].update_At %></span>
-				    </li>
-				    <%}%>
+				     <%for (var i=0;i<articles.length;i++){%>
+					    <li class="list-group-item">
+					    	<a class="avator" href="/user/detail/<%=articles[i].author%>" class="pull-left"><%= articles[i].author %></a>
+					    	<a href="/article/detail/<%=articles[i]._id%>"><%= articles[i].title %></a>
+					    	<span class='pull-right'><%= articles[i].update_At %></span>
+					    </li>
+					  <%}%>
 				  </ul>
 				</div>
+
 			</div>
 			<div class="col-md-4">
-				<div class="panel panel-default">
-				  <div class="panel-body">
-				    Basic panel example
-				  </div>
-				</div>
+				    <%-include('../template/userInfo.ejs')-%>
 			</div>
 		</div>
 	</div>

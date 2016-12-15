@@ -7,11 +7,12 @@ var router = require('./router/routers');
 var bodyParser = require('body-parser');
 var app = express();
 
-app.use(session({ secret: 'my_blog', cookie: { maxAge: 60000 } }));
+app.use(session({ secret: 'my_blog', cookie: { maxAge: 600000 } }));
 
 app.use(bodyParser());
 app.use(express.static('./public'));
 app.use(express.static('./bower_components'));
+app.use(express.static('./avatar'));
 app.set('view engine', 'ejs');
 
 app.get('/', router.showIndex);
@@ -27,7 +28,13 @@ app.post('/articel/doEdit', router.doEdit);
 // 文章详情页
 app.get('/article/detail/:id', router.articleDetail);
 
+// 登出请求
 app.post('/logout', router.logout);
+
+// 用户信息页
+app.get('/user/detail/:name', router.userDatail)
+
+app.post('/article/comment', router.comment)
 
 app.listen(3000);
 console.log('server is start');

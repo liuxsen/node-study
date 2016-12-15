@@ -22,7 +22,7 @@ var articleSchema = new Schema({
     commemts: [ //评论
         {
             type: Schema.ObjectId,
-            ref: 'Comments' //评论表
+            ref: 'Comment' //评论表
         }
     ]
 })
