@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <style>
+    ul,
+    li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    
+    ul {
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+        margin: 200px auto;
+        transform-style: preserve-3d;
+        perspective: 100000px;
+        transform-origin: 50% 50%;
+        transform: translateZ('30px');
+        transform: rotate3d(1, 1, 1, 60deg);
+    }
+    
+    .ye {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #eee;
+        opacity: .4;
+    }
+    
+    .ye1 {
+        left: -100px;
+        top: 0;
+        transform: rotateY(-90deg);
+        transform-origin: 100% 0%;
+        background: red;
+    }
+    
+    .ye2 {
+        left: 0;
+        top: 100px;
+        transform: rotateX(-90deg);
+        transform-origin: 0% 0%;
+        background: #eee;
+    }
+    
+    .ye3 {
+        left: 100px;
+        top: 0;
+        transform: rotateY(90deg);
+        transform-origin: 0% 50%;
+        background: blue;
+    }
+    
+    .ye4 {
+        top: -100px;
+        left: 0;
+        transform: rotateX(90deg);
+        transform-origin: 0% 100%;
+        background: green;
+    }
+    
+    .ye6 {
+        top: 0;
+        left: 0;
+        transform: translateZ(-100px);
+        background: #333;
+    }
+    </style>
+</head>
+
+<body>
+    <ul id="box">
+        <li class="ye ye1">1</li>
+        <li class="ye ye2">2</li>
+        <li class="ye ye3">3</li>
+        <li class="ye ye4">4</li>
+        <li class="ye ye5">5</li>
+        <li class="ye ye6">6</li>
+    </ul>
+    <script>
+    var ul = document.getElementById('box');
+    var rotate = 'rotate3d(1, 1, 0, 60deg)';
+    var i = 60;
+    setInterval(function() {
+        console.log(1)
+        i++;
+        rotate = 'rotate3d(1, 1, 0, ' + i + 'deg)  translateZ(50px)';
+        console.log(rotate)
+        ul.style.transform = rotate;
+    }, 10);
+    </script>
+</body>
+
+</html>
